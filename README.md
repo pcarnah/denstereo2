@@ -1,3 +1,5 @@
+Disclaimer: don't expect high software engineering quality here, this is a research code base with contributions by multiple people.
+
 # GDRN-Stereo
 This repository contains code for Deep Stereo RGB-only Dense 6D Object Pose Estimation.
 Leveraging stereo, we extend the state-of-the-art in the task of direct 6D pose regression.
