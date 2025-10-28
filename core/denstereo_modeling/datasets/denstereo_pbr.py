@@ -216,10 +216,10 @@ class DENSTEREO_PBR_Dataset:
                     # load mask visib  TODO: load both mask_visib and mask_full
                     mask_single_l = mmcv.imread(mask_visib_file_l, "unchanged")
                     mask_single_r = mmcv.imread(mask_visib_file_r, "unchanged")
-                    mask_single_l = mask_single_l.astype(np.bool).astype(np.int)
-                    mask_single_r = mask_single_r.astype(np.bool).astype(np.int)
-                    mask_single_erode_l = scin.binary_erosion(mask_single_l.astype(np.int))
-                    mask_single_erode_r = scin.binary_erosion(mask_single_r.astype(np.int))
+                    mask_single_l = mask_single_l.astype(bool).astype(int)
+                    mask_single_r = mask_single_r.astype(bool).astype(int)
+                    mask_single_erode_l = scin.binary_erosion(mask_single_l.astype(int))
+                    mask_single_erode_r = scin.binary_erosion(mask_single_r.astype(int))
                     area_l = mask_single_erode_l.sum()
                     area_r = mask_single_erode_r.sum()
                     if (area_l <= 64) or (area_r <= 64):  # filter out too small or nearly invisible instances

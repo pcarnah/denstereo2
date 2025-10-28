@@ -553,11 +553,11 @@ class GDRN_Stereobj_1m_DatasetFromList(Base_DatasetFromList):
         xyz_r = cv2.resize(xyz_r, (im_W, im_H), interpolation=cv2.INTER_AREA)
 
         # NOTE: full mask
-        mask_obj_l = ((xyz_l[:, :, 0] != 0) | (xyz_l[:, :, 1] != 0) | (xyz_l[:, :, 2] != 0)).astype(np.bool).astype(np.float32)
-        mask_obj_r = ((xyz_r[:, :, 0] != 0) | (xyz_r[:, :, 1] != 0) | (xyz_r[:, :, 2] != 0)).astype(np.bool).astype(np.float32)
+        mask_obj_l = ((xyz_l[:, :, 0] != 0) | (xyz_l[:, :, 1] != 0) | (xyz_l[:, :, 2] != 0)).astype(bool).astype(np.float32)
+        mask_obj_r = ((xyz_r[:, :, 0] != 0) | (xyz_r[:, :, 1] != 0) | (xyz_r[:, :, 2] != 0)).astype(bool).astype(np.float32)
 
-        mask_obj_erode_l = scin.binary_erosion(mask_obj_l.astype(np.int)).astype(np.float32)
-        mask_obj_erode_r = scin.binary_erosion(mask_obj_r.astype(np.int)).astype(np.float32)
+        mask_obj_erode_l = scin.binary_erosion(mask_obj_l.astype(int)).astype(np.float32)
+        mask_obj_erode_r = scin.binary_erosion(mask_obj_r.astype(int)).astype(np.float32)
         if cfg.INPUT.SMOOTH_XYZ:
             xyz_l = self.smooth_xyz(xyz_l)
             xyz_r = self.smooth_xyz(xyz_r)

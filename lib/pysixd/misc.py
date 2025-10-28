@@ -681,26 +681,26 @@ def calc_2d_bbox_xyxy_v2(xs, ys, width=640, height=480, clip=False):
 
 # def calc_pose_2d_bbox_old(model, im_size, K, R_m2c, t_m2c):
 #     pts_im = project_pts(model["pts"], K, R_m2c, t_m2c)
-#     pts_im = np.round(pts_im).astype(np.int)
+#     pts_im = np.round(pts_im).astype(int)
 #     return calc_2d_bbox(pts_im[:, 0], pts_im[:, 1], im_size)
 
 
 def calc_pose_2d_bbox_xywh(points, width, height, K, R_m2c, t_m2c):
     pts_im = project_pts(points, K, R_m2c, t_m2c)
-    # pts_im = np.round(pts_im).astype(np.int)
+    # pts_im = np.round(pts_im).astype(int)
     return calc_2d_bbox_xywh(pts_im[:, 0], pts_im[:, 1], width, height)
 
 
 def calc_pose_2d_bbox_xyxy(points, width, height, K, R_m2c, t_m2c):
     pts_im = project_pts(points, K, R_m2c, t_m2c)
-    # pts_im = np.round(pts_im).astype(np.int)
+    # pts_im = np.round(pts_im).astype(int)
     return calc_2d_bbox_xyxy(pts_im[:, 0], pts_im[:, 1], width, height)
 
 
 def calc_pose_2d_bbox_xyxy_v2(points, width, height, K, R_m2c, t_m2c):
     """br is excluded."""
     pts_im = project_pts(points, K, R_m2c, t_m2c)
-    # pts_im = np.round(pts_im).astype(np.int)
+    # pts_im = np.round(pts_im).astype(int)
     return calc_2d_bbox_xyxy_v2(pts_im[:, 0], pts_im[:, 1], width, height)
 
 
@@ -877,7 +877,7 @@ def paste_emb_to_im_batch(embs, bboxes_xyxy, height=480, width=640):
         if src is None:
             tgt_embs[i] = None
             continue
-        x1, y1, x2, y2 = bboxes_xyxy[i, :4].astype(np.int)
+        x1, y1, x2, y2 = bboxes_xyxy[i, :4].astype(int)
         tgt_embs[i][y1 : y2 + 1, x1 : x2 + 1] = src
     return tgt_embs
 

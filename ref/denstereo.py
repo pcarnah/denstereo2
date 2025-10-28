@@ -20,7 +20,9 @@ bop_root = osp.join(data_root, "BOP_DATASETS/")
 # ---------------------------------------------------------------- #
 # DENSTEREO DATASET
 # ---------------------------------------------------------------- #
-dataset_root = osp.join(bop_root, "denstereo/")
+dataset_root = "/mnt/d/YCB-V-DS"
+if not osp.exists(dataset_root):
+    dataset_root = "D:/YCB-V-DS"
 
 train_pbr_dir = osp.join(dataset_root, "train_pbr_left")
 

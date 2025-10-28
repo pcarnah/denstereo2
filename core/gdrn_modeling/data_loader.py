@@ -468,7 +468,7 @@ class GDRN_DatasetFromList(Base_DatasetFromList):
         xyz = np.zeros((im_H, im_W, 3), dtype=np.float32)
         xyz[y1 : y2 + 1, x1 : x2 + 1, :] = xyz_crop
         # NOTE: full mask
-        mask_obj = ((xyz[:, :, 0] != 0) | (xyz[:, :, 1] != 0) | (xyz[:, :, 2] != 0)).astype(np.bool).astype(np.float32)
+        mask_obj = ((xyz[:, :, 0] != 0) | (xyz[:, :, 1] != 0) | (xyz[:, :, 2] != 0)).astype(bool).astype(np.float32)
         if cfg.INPUT.SMOOTH_XYZ:
             xyz = self.smooth_xyz(xyz)
 

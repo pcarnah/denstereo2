@@ -239,7 +239,7 @@ class XyzGen(object):
                     assert osp.exists(mask_visib_file), mask_visib_file
                     # load mask visib  TODO: load both mask_visib and mask_full
                     mask = mmcv.imread(mask_visib_file, "unchanged")
-                    mask = mask.astype(np.bool).astype(np.float)
+                    mask = mask.astype(bool).astype(np.float)
                     mask_cuda = torch.from_numpy(mask).cuda()
                     if mask.sum() < 1:
                         Q0 = {

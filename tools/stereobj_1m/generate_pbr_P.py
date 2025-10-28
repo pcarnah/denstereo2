@@ -216,7 +216,7 @@ def modelload(model_dir, ids, scale=1):
         norm_d = np.asarray(
             [ply['vertex'].data['nx'], ply['vertex'].data['ny'], ply['vertex'].data['nz']]).transpose()
         vert_id = [id for id in ply['face'].data['vertex_indices']]
-        vert_id = np.asarray(vert_id, np.int64)
+        vert_id = np.asarray(vert_id, int64)
         modellist[str(obj)] = {
             "vert": np.array(vert.astype("float32")),
             "norm_d": np.array(norm_d.astype("float32")),

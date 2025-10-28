@@ -469,9 +469,9 @@ class GDRN_DatasetFromList(Base_DatasetFromList):
         xyz = np.zeros((im_H, im_W, 3), dtype=np.float32)
         xyz[y1 : y2 + 1, x1 : x2 + 1, :] = xyz_crop
         # NOTE: full mask
-        mask_obj = ((xyz[:, :, 0] != 0) | (xyz[:, :, 1] != 0) | (xyz[:, :, 2] != 0)).astype(np.bool).astype(np.float32)
+        mask_obj = ((xyz[:, :, 0] != 0) | (xyz[:, :, 1] != 0) | (xyz[:, :, 2] != 0)).astype(bool).astype(np.float32)
 
-        mask_obj_erode = scin.binary_erosion(mask_obj.astype(np.int)).astype(np.float32)
+        mask_obj_erode = scin.binary_erosion(mask_obj.astype(int)).astype(np.float32)
         if cfg.INPUT.SMOOTH_XYZ:
             xyz = self.smooth_xyz(xyz)
 
@@ -484,13 +484,13 @@ class GDRN_DatasetFromList(Base_DatasetFromList):
         Q0 = np.zeros((im_H, im_W, 6), dtype=np.float32)
         Q0[y1: y2 + 1, x1: x2 + 1, :] = occ_crop.astype(np.float32)
         occmask_x = (
-            (((Q0[:, :, 0] != 0) | (Q0[:, :, 1] != 0)) & (mask_obj_erode != 0)).astype(np.bool).astype(np.float32)
+            (((Q0[:, :, 0] != 0) | (Q0[:, :, 1] != 0)) & (mask_obj_erode != 0)).astype(bool).astype(np.float32)
         )
         occmask_y = (
-            (((Q0[:, :, 2] != 0) | (Q0[:, :, 3] != 0)) & (mask_obj_erode != 0)).astype(np.bool).astype(np.float32)
+            (((Q0[:, :, 2] != 0) | (Q0[:, :, 3] != 0)) & (mask_obj_erode != 0)).astype(bool).astype(np.float32)
         )
         occmask_z = (
-            (((Q0[:, :, 4] != 0) | (Q0[:, :, 5] != 0)) & (mask_obj_erode != 0)).astype(np.bool).astype(np.float32)
+            (((Q0[:, :, 4] != 0) | (Q0[:, :, 5] != 0)) & (mask_obj_erode != 0)).astype(bool).astype(np.float32)
         )
 
         # override bbox info using xyz_infos

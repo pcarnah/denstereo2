@@ -230,7 +230,7 @@ class estimate_coor_P0():
                             norm_d = np.asarray(
                                 [ply['vertex'].data['nx'], ply['vertex'].data['ny'], ply['vertex'].data['nz']]).transpose()
                             vert_id = [id for id in ply['face'].data['vertex_indices']]
-                            vert_id = np.asarray(vert_id, np.int64)
+                            vert_id = np.asarray(vert_id, int64)
                             pixellist = np.full([height, width], 100, dtype=np.float32)  # 加一个大数
                             # 实际上就是将每个3角面片投影回来，查看其中包含的整点像素，为其提供一个估计，然后最后选择能看到的那个，Z值最小
                             xyz_crop = calc_xy_crop(vert_id, vert, camK, R, t, norm_d, height, width, camK_inv, pixellist, mask, xyz["xyxy"])

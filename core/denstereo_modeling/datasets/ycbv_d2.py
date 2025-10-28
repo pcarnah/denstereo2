@@ -198,8 +198,8 @@ class YCBV_Dataset:
                     mask_visib_file = osp.join(image_root, f"{scene_id:06d}/mask_visib/{im_id:06d}_{anno_i:06d}.png")
                     assert osp.exists(mask_visib_file), mask_visib_file
                     mask = mmcv.imread(mask_visib_file, "unchanged")  # visible mask
-                    mask_single = mask.astype(np.bool).astype(np.int)
-                    mask_single_erode = scin.binary_erosion(mask_single.astype(np.int))
+                    mask_single = mask.astype(bool).astype(int)
+                    mask_single_erode = scin.binary_erosion(mask_single.astype(int))
                     area = mask_single_erode.sum()
                     if area < 30 and self.filter_invalid:
                         num_instances_without_valid_segmentation += 1

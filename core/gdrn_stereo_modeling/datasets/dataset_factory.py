@@ -11,13 +11,13 @@ from detectron2.data import DatasetCatalog, MetadataCatalog
 # from core.gdrn_stereo_modeling.datasets import lm_dataset_d2
 # from core.gdrn_stereo_modeling.datasets import lm_pbr
 # from core.gdrn_stereo_modeling.datasets import lm_blender
-from core.gdrn_stereo_modeling.datasets import ycbv_pbr
-from core.gdrn_stereo_modeling.datasets import ycbv_d2
-from core.gdrn_stereo_modeling.datasets import ycbv_bop_test
-from core.gdrn_stereo_modeling.datasets import denstereo_pbr
-from core.gdrn_stereo_modeling.datasets import stereobj_1m_detectron
+# from core.gdrn_stereo_modeling.datasets import ycbv_pbr
+# from core.gdrn_stereo_modeling.datasets import ycbv_d2
+# from core.gdrn_stereo_modeling.datasets import ycbv_bop_test
+# from core.gdrn_stereo_modeling.datasets import denstereo_pbr
+# from core.gdrn_stereo_modeling.datasets import stereobj_1m_detectron
 # from core.gdrn_stereo_modeling.datasets import denstereo_pbr_debug
-# from core.gdrn_stereo_modeling.datasets import denstereo_pbr_test
+from core.gdrn_stereo_modeling.datasets import denstereo_pbr_test
 
 
 cur_dir = osp.dirname(osp.abspath(__file__))
@@ -28,11 +28,12 @@ _DSET_MOD_NAMES = [
     # "lm_dataset_d2",
     # "lm_pbr",
     # "lm_blender",
-    "ycbv_pbr",
-    "ycbv_d2",
-    "ycbv_bop_test",
-    "denstereo_pbr",
-    "stereobj_1m_detectron",
+    # "ycbv_pbr",
+    # "ycbv_d2",
+    # "ycbv_bop_test",2
+    # "denstereo_pbr",
+    "denstereo_pbr_test",
+    # "stereobj_1m_detectron",
     ]
 
 logger = logging.getLogger(__name__)

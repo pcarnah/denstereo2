@@ -143,7 +143,7 @@ def main():
             x, y, w, h = np.round(
                 (np.array(new_bb) + np.array([-crop_x[0], -crop_y[0], 0, 0])) * s + np.array([x_offset, y_offset, 0, 0])
             )
-            # x,y,w,h = np.round(np.array(gt['obj_bb'])*s+np.array([x_offset,y_offset,0,0])).astype(np.int32)
+            # x,y,w,h = np.round(np.array(gt['obj_bb'])*s+np.array([x_offset,y_offset,0,0])).astype(int32)
             new_scene_gt[i].append({"obj_id": int(rand_obj_id + 1), "obj_bb": [float(x), float(y), float(w), float(h)]})
             cur_num_objs += 1
             if cur_num_objs >= max_objects_in_scene:

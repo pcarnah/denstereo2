@@ -182,7 +182,7 @@ def estimate_occ_mask_Q0(rootdir, cls_name, scale=1000):  # cls_name也就是obj
         #  get Q0
         #  show the result
         '''
-        pic_point = Q0_z[:, occ_mask_z.astype(np.bool)]
+        pic_point = Q0_z[:, occ_mask_z.astype(bool)]
         pic_point = pic_point.T
         plt.figure("3D scatter", facecolor="lightgray")
         ax3d = plt.gca(projection="3d")

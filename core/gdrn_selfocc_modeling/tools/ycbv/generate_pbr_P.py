@@ -116,7 +116,7 @@ def modelload(model_dir, ids, scale=1000.):
         norm_d = np.asarray(
             [ply['vertex'].data['nx'], ply['vertex'].data['ny'], ply['vertex'].data['nz']]).transpose()
         vert_id = [id for id in ply['face'].data['vertex_indices']]
-        vert_id = np.asarray(vert_id, np.int64)
+        vert_id = np.asarray(vert_id, int64)
         modellist[str(obj)] = {
             "vert": torch.as_tensor(vert.astype("float32")).cuda(),
             "norm_d": torch.as_tensor(norm_d.astype("float32")).cuda(),
@@ -186,7 +186,7 @@ class XyzGen(object):
                     # assert osp.exists(mask_file), mask_file
                     # load mask visib  TODO: load both mask_visib and mask_full
                     mask = mmcv.imread(mask_visib_file, "unchanged")
-                    mask = mask.astype(np.bool).astype(np.float)
+                    mask = mask.astype(bool).astype(np.float)
                     mask_cuda = torch.as_tensor(mask).cuda()
                     if torch.sum(mask_cuda) == 0:
                         P = {

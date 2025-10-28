@@ -216,15 +216,18 @@ def main(args):
 
 
 if __name__ == "__main__":
-    import resource
     import argparse
     from mmcv import DictAction
     # RuntimeError: received 0 items of ancdata. Issue: pytorch/pytorch#973
-    rlimit = resource.getrlimit(resource.RLIMIT_NOFILE)
-    hard_limit = rlimit[1]
-    soft_limit = min(500000, hard_limit)
-    iprint("soft limit: ", soft_limit, "hard limit: ", hard_limit)
-    resource.setrlimit(resource.RLIMIT_NOFILE, (soft_limit, hard_limit))
+    try:
+        import resource
+        rlimit = resource.getrlimit(resource.RLIMIT_NOFILE)
+        hard_limit = rlimit[1]
+        soft_limit = min(500000, hard_limit)
+        iprint("soft limit: ", soft_limit, "hard limit: ", hard_limit)
+        resource.setrlimit(resource.RLIMIT_NOFILE, (soft_limit, hard_limit))
+    except ImportError:
+        print('resource not available on windows')
 
     # construct args
     parser = argparse.ArgumentParser(

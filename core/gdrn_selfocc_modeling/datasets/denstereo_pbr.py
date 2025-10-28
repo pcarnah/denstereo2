@@ -180,8 +180,8 @@ class DENSTEREO_PBR_Dataset:
                     assert osp.exists(mask_visib_file), mask_visib_file
                     # load mask visib  TODO: load both mask_visib and mask_full
                     mask_single = mmcv.imread(mask_visib_file, "unchanged")
-                    mask_single = mask_single.astype(np.bool).astype(np.int)
-                    mask_single_erode = scin.binary_erosion(mask_single.astype(np.int))
+                    mask_single = mask_single.astype(bool).astype(int)
+                    mask_single_erode = scin.binary_erosion(mask_single.astype(int))
                     area = mask_single_erode.sum()
                     if area <= 64:  # filter out too small or nearly invisible instances
                         self.num_instances_without_valid_segmentation += 1

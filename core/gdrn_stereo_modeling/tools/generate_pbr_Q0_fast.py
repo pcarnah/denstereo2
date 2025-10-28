@@ -134,7 +134,7 @@ class Q0_generator_fast():
                         assert osp.exists(mask_visib_file), mask_visib_file
                         # load mask visib  TODO: load both mask_visib and mask_full
                         mask = mmcv.imread(mask_visib_file, "unchanged")
-                        mask = mask.astype(np.bool).astype(np.float)
+                        mask = mask.astype(bool).astype(np.float)
                         mask_all = mask_all + mask
                         '''
                         show mask
@@ -157,7 +157,7 @@ class Q0_generator_fast():
 
                 # generate Qo in a single iteration
                 numK = len(flag_save)
-                mask_all = mask_all.astype(np.bool).astype(np.float)
+                mask_all = mask_all.astype(bool).astype(np.float)
                 Q0_x = np.zeros((numK*3, height, width))
                 Q0_y = np.zeros((numK*3, height, width))
                 Q0_z = np.zeros((numK*3, height, width))

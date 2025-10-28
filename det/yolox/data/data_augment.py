@@ -25,7 +25,7 @@ def augment_hsv(img, hgain=0.5, sgain=0.5, vgain=0.5, source_format="BGR"):
         hue, sat, val = cv2.split(cv2.cvtColor(img, cv2.COLOR_BGR2HSV))
     dtype = img.dtype  # uint8
 
-    x = np.arange(0, 256, dtype=np.int16)
+    x = np.arange(0, 256, dtype=int16)
     lut_hue = ((x * r[0]) % 180).astype(dtype)
     lut_sat = np.clip(x * r[1], 0, 255).astype(dtype)
     lut_val = np.clip(x * r[2], 0, 255).astype(dtype)
@@ -44,8 +44,8 @@ def augment_hsv(img, hgain=0.5, sgain=0.5, vgain=0.5, source_format="BGR"):
 # def augment_hsv(img, hgain=5, sgain=30, vgain=30):
 #     hsv_augs = np.random.uniform(-1, 1, 3) * [hgain, sgain, vgain]  # random gains
 #     hsv_augs *= np.random.randint(0, 2, 3)  # random selection of h, s, v
-#     hsv_augs = hsv_augs.astype(np.int16)
-#     img_hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV).astype(np.int16)
+#     hsv_augs = hsv_augs.astype(int16)
+#     img_hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV).astype(int16)
 
 #     img_hsv[..., 0] = (img_hsv[..., 0] + hsv_augs[0]) % 180
 #     img_hsv[..., 1] = np.clip(img_hsv[..., 1] + hsv_augs[1], 0, 255)

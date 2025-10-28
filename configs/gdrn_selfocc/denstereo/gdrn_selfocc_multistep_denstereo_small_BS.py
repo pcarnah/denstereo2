@@ -42,10 +42,10 @@ SOLVER = dict(
 
 DATASETS = dict(
     TRAIN=(
-        # "denstereo_train_pbr_left",
-        "denstereo_002_master_chef_can_train_pbr",
+        "denstereo_train_pbr",
+        # "denstereo_002_master_chef_can_train_pbr",
     ),
-    TEST=("denstereo_test_pbr_left",),
+    TEST=("denstereo_test_pbr",),
     DET_FILES_TEST=(
         "datasets/BOP_DATASETS/denstereo/test_bboxes/test_pbr_left.json",
     ),
@@ -92,11 +92,13 @@ DATALOADER = dict(
 
 
 MODEL = dict(
+    STEREO=True,
+    DISP_NET=False,
     LOAD_DETS_TEST=True,
     PIXEL_MEAN=[0.0, 0.0, 0.0],
     PIXEL_STD=[255.0, 255.0, 255.0],
     POSE_NET=dict(
-        NAME="GDRN",
+        NAME="GDRN_stereo_double",
         BACKBONE=dict(
             FREEZE=False,
             PRETRAINED="timm",
@@ -117,33 +119,9 @@ MODEL = dict(
             ),
             NUM_REGIONS=64,
         ),
-        ## selfocchead  Q0 occmask(optional)
-        SELFOCC_HEAD=dict(
-            OCCMASK_AWARE=False,
-            Q0_CLASS_AWARE=False,
-            MASK_CLASS_AWARE=False,
-            FREEZE=False,
-            INIT_CFG=dict(
-                type="ConvSelfoccHead",
-                in_dim=2048,
-                feat_dim=256,
-                feat_kernel_size=3,
-                norm="GN",
-                num_gn_groups=32,
-                act="GELU",  # relu | lrelu | silu (swish) | gelu | mish
-                out_kernel_size=1,
-                out_layer_shared=False,
-                Q0_num_classes=1,
-                mask_num_classes=1,
-            ),
-            MIN_Q0_REGION=20,
-            LR_MULT=1.0,
-
-            REGION_CLASS_AWARE=False,
-            MASK_THR_TEST=0.5,
-        ),
         PNP_NET=dict(
-            INIT_CFG=dict(type="ConvPnPNet", norm="GN", act="gelu"),
+            INIT_CFG=dict(type="ConvPnPNetStereo", norm="GN", act="gelu"),
+            DISPARITY=False,
             REGION_ATTENTION=True,
             WITH_2D_COORD=True,
             ROT_TYPE="allo_rot6d",
@@ -171,22 +149,8 @@ MODEL = dict(
             # z loss -----------
             Z_LOSS_TYPE="L1",
             Z_LW=1.0,
-            # Q0 loss ---------------------
-            Q0_LOSS_TYPE="L1",
-            Q0_LOSS_MASK_GT="visib",  # computed from Q0
-            Q0_LW=1.0,
-            Q0_DEF_LW=1.0,
-            # cross-task loss -------------------
-            CT_LW=10.0,
-            CT_P_LW=1.0,
-            # occlusion mask loss weight
-            OCC_LW=0.0,
             PM_NORM_BY_EXTENT=True,
             PM_LOSS_SYM=True,
-            # Q direction
-            QD_LW=0.0,
-            #
-            HANDLE_SYM=True,
         ),
     ),
 )

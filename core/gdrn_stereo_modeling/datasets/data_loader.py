@@ -553,11 +553,11 @@ class GDRN_DatasetFromList(Base_DatasetFromList):
         xyz_r[y1 : y2 + 1, x1 : x2 + 1, :] = xyz_crop
 
         # NOTE: full mask
-        mask_obj_l = ((xyz_l[:, :, 0] != 0) | (xyz_l[:, :, 1] != 0) | (xyz_l[:, :, 2] != 0)).astype(np.bool).astype(np.float32)
-        mask_obj_r = ((xyz_r[:, :, 0] != 0) | (xyz_r[:, :, 1] != 0) | (xyz_r[:, :, 2] != 0)).astype(np.bool).astype(np.float32)
+        mask_obj_l = ((xyz_l[:, :, 0] != 0) | (xyz_l[:, :, 1] != 0) | (xyz_l[:, :, 2] != 0)).astype(bool).astype(np.float32)
+        mask_obj_r = ((xyz_r[:, :, 0] != 0) | (xyz_r[:, :, 1] != 0) | (xyz_r[:, :, 2] != 0)).astype(bool).astype(np.float32)
 
-        mask_obj_erode_l = scin.binary_erosion(mask_obj_l.astype(np.int)).astype(np.float32)
-        mask_obj_erode_r = scin.binary_erosion(mask_obj_r.astype(np.int)).astype(np.float32)
+        mask_obj_erode_l = scin.binary_erosion(mask_obj_l.astype(int)).astype(np.float32)
+        mask_obj_erode_r = scin.binary_erosion(mask_obj_r.astype(int)).astype(np.float32)
         if cfg.INPUT.SMOOTH_XYZ:
             xyz_l = self.smooth_xyz(xyz_l)
             xyz_r = self.smooth_xyz(xyz_r)
@@ -584,13 +584,13 @@ class GDRN_DatasetFromList(Base_DatasetFromList):
 
         Q0_l[y1: y2 + 1, x1: x2 + 1, :] = occ_crop_l.astype(np.float32)
         occmask_x_l = (
-            (((Q0_l[:, :, 0] != 0) | (Q0_l[:, :, 1] != 0)) & (mask_obj_erode_l != 0)).astype(np.bool).astype(np.float32)
+            (((Q0_l[:, :, 0] != 0) | (Q0_l[:, :, 1] != 0)) & (mask_obj_erode_l != 0)).astype(bool).astype(np.float32)
         )
         occmask_y_l = (
-            (((Q0_l[:, :, 2] != 0) | (Q0_l[:, :, 3] != 0)) & (mask_obj_erode_l != 0)).astype(np.bool).astype(np.float32)
+            (((Q0_l[:, :, 2] != 0) | (Q0_l[:, :, 3] != 0)) & (mask_obj_erode_l != 0)).astype(bool).astype(np.float32)
         )
         occmask_z_l = (
-            (((Q0_l[:, :, 4] != 0) | (Q0_l[:, :, 5] != 0)) & (mask_obj_erode_l != 0)).astype(np.bool).astype(np.float32)
+            (((Q0_l[:, :, 4] != 0) | (Q0_l[:, :, 5] != 0)) & (mask_obj_erode_l != 0)).astype(bool).astype(np.float32)
         )
 
         x1, y1, x2, y2 = occ_info_r['xyxy']
@@ -599,13 +599,13 @@ class GDRN_DatasetFromList(Base_DatasetFromList):
 
         Q0_r[y1: y2 + 1, x1: x2 + 1, :] = occ_crop_r.astype(np.float32)
         occmask_x_r = (
-            (((Q0_r[:, :, 0] != 0) | (Q0_r[:, :, 1] != 0)) & (mask_obj_erode_r != 0)).astype(np.bool).astype(np.float32)
+            (((Q0_r[:, :, 0] != 0) | (Q0_r[:, :, 1] != 0)) & (mask_obj_erode_r != 0)).astype(bool).astype(np.float32)
         )
         occmask_y_r = (
-            (((Q0_r[:, :, 2] != 0) | (Q0_r[:, :, 3] != 0)) & (mask_obj_erode_r != 0)).astype(np.bool).astype(np.float32)
+            (((Q0_r[:, :, 2] != 0) | (Q0_r[:, :, 3] != 0)) & (mask_obj_erode_r != 0)).astype(bool).astype(np.float32)
         )
         occmask_z_r = (
-            (((Q0_r[:, :, 4] != 0) | (Q0_r[:, :, 5] != 0)) & (mask_obj_erode_r != 0)).astype(np.bool).astype(np.float32)
+            (((Q0_r[:, :, 4] != 0) | (Q0_r[:, :, 5] != 0)) & (mask_obj_erode_r != 0)).astype(bool).astype(np.float32)
         )
 
         inst_infos["bbox_mode"] = BoxMode.XYXY_ABS
@@ -920,7 +920,7 @@ def build_gdrn_train_loader(cfg, dataset_names):
         dataset = GDRN_Online_DatasetFromList(cfg, split="train", lst=dataset_dicts, copy=False)
     else:
         loader_type = cfg.DATALOADER.get("TYPE", "")
-        if cfg.DATALOADER.TYPE == "stereobj_1m":
+        if loader_type == "stereobj_1m":
             dataset = GDRN_Stereobj_1m_DatasetFromList(cfg, split="train", lst=dataset_dicts, copy=False)
         else:
             dataset = GDRN_DatasetFromList(cfg, split="train", lst=dataset_dicts, copy=False)

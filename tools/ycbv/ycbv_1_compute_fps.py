@@ -11,8 +11,7 @@ import ref
 from core.utils.data_utils import get_fps_and_center
 
 
-ref_key = "ycbv"
-data_ref = ref.__dict__[ref_key]
+data_ref = ref.denstereo
 
 model_dir = data_ref.model_dir
 id2obj = data_ref.id2obj
