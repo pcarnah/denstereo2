@@ -20,9 +20,14 @@ bop_root = osp.join(data_root, "BOP_DATASETS/")
 # ---------------------------------------------------------------- #
 # DENSTEREO DATASET
 # ---------------------------------------------------------------- #
-dataset_root = "/mnt/d/YCB-V-DS"
-if not osp.exists(dataset_root):
+if os.environ.get("SLURM_TMPDIR") is not None:
+    dataset_root = osp.join(os.environ["SLURM_TMPDIR"], "YCB-V-DS")
+elif osp.exists("/mnt/d/YCB-V-DS"):
+    dataset_root = "/mnt/d/YCB-V-DS"
+elif osp.exists("D:/YCB-V-DS"):
     dataset_root = "D:/YCB-V-DS"
+else:
+    raise FileNotFoundError("Dataset not found.")
 
 train_pbr_dir = osp.join(dataset_root, "train_pbr_left")
 

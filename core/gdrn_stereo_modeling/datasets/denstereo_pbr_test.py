@@ -30,10 +30,14 @@ import scipy.ndimage as scin
 
 logger = logging.getLogger(__name__)
 
-DATASETS_ROOT = osp.normpath("/mnt/d/YCB-V-DS")
-if not osp.exists(DATASETS_ROOT):
-    DATASETS_ROOT = osp.normpath("D:/YCB-V-DS")
-
+if os.environ.get("SLURM_TMPDIR") is not None and osp.exists(osp.join(os.environ["SLURM_TMPDIR"], "YCB-V-DS")):
+    DATASETS_ROOT = osp.join(os.environ["SLURM_TMPDIR"], "YCB-V-DS")
+elif osp.exists("/mnt/d/YCB-V-DS"):
+    DATASETS_ROOT = "/mnt/d/YCB-V-DS"
+elif osp.exists("D:/YCB-V-DS"):
+    DATASETS_ROOT = "D:/YCB-V-DS"
+else:
+    raise FileNotFoundError("Dataset not found.")
 
 class DENSTEREO_PBR_Dataset:
     def __init__(self, data_cfg):
