@@ -247,10 +247,15 @@ class DENSTEREO_PBR_Dataset:
                         mask_file_r = osp.join(scene_root_r, "mask/{:06d}_{:06d}.png".format(int_im_id, anno_i))
                         mask_visib_file_l = osp.join(scene_root_l, "mask_visib/{:06d}_{:06d}.png".format(int_im_id, anno_i))
                         mask_visib_file_r = osp.join(scene_root_r, "mask_visib/{:06d}_{:06d}.png".format(int_im_id, anno_i))
-                        assert osp.exists(mask_file_l), mask_file_l
-                        assert osp.exists(mask_file_r), mask_file_r
-                        assert osp.exists(mask_visib_file_l), mask_visib_file_l
-                        assert osp.exists(mask_visib_file_r), mask_visib_file_r
+                        # assert osp.exists(mask_file_l), mask_file_l
+                        # assert osp.exists(mask_file_r), mask_file_r
+                        # assert osp.exists(mask_visib_file_l), mask_visib_file_l
+                        # assert osp.exists(mask_visib_file_r), mask_visib_file_r
+                        if not (osp.exists(mask_file_l)
+                                and osp.exists(mask_file_r)
+                                and osp.exists(mask_visib_file_l)
+                                and osp.exists(mask_visib_file_r)):
+                            continue
                         # load mask visib  TODO: load both mask_visib and mask_full
                         mask_single_l = mmcv.imread(mask_visib_file_l, "unchanged")
                         mask_single_r = mmcv.imread(mask_visib_file_r, "unchanged")
