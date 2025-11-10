@@ -2,6 +2,7 @@ setproctitle
 mmcv==1.7.1
 transforms3d
 imageio
+pillow
 pypng==0.0.21
 scikit-image
 timm==0.4.12

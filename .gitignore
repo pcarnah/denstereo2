@@ -5,3 +5,5 @@ wandb
 .vscode
 output/
 runs/*yaml
+datasets/
+slurm-*

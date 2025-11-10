@@ -17,6 +17,9 @@ from mmcv import Config
 import cv2
 import wandb
 
+import PIL
+PIL.__version__ = PIL.__version__.split('.post')[0]
+
 cv2.setNumThreads(0)  # pytorch issue 1355: possible deadlock in dataloader
 # OpenCL may be enabled by default in OpenCV3; disable it because it's not
 # thread safe and causes unwanted GPU memory allocations.

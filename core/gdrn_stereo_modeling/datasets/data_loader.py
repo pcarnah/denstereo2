@@ -320,8 +320,11 @@ class GDRN_DatasetFromList(Base_DatasetFromList):
         image_r = read_image_mmcv(dataset_dict["file_name_r"], format=self.img_format)
 
         # import matplotlib.pyplot as plt
-        depth_l = imageio.imread(dataset_dict["depth_file_l"]).astype(np.float32)
-        depth_r = imageio.imread(dataset_dict["depth_file_r"]).astype(np.float32)
+        try:
+            depth_l = imageio.imread(dataset_dict["depth_file_l"]).astype(np.float32)
+            depth_r = imageio.imread(dataset_dict["depth_file_r"]).astype(np.float32)
+        except:
+            print("error in reading depth file:", dataset_dict["depth_file_l"], dataset_dict["depth_file_r"])
         # fig, ax = plt.subplots(2)
         # fig.suptitle('begin read data')
         # ax[0].imshow(image_l)
@@ -537,20 +540,25 @@ class GDRN_DatasetFromList(Base_DatasetFromList):
         dataset_dict["roi_extent"] = torch.tensor(roi_extent, dtype=torch.float32)
 
         # load xyz =======================================================
-        xyz_info_l = np.load(inst_infos["xyz_path_l"]) # also load npz files
-        xyz_info_r = np.load(inst_infos["xyz_path_r"]) # also load npz files
+        try:
+            # xyz_info_l = np.load(inst_infos["xyz_path_l"]) # also load npz files
+            with np.load(inst_infos["xyz_path_l"]) as xyz_info_l:
+                x1, y1, x2, y2 = xyz_info_l["xyxy"]
+                xyz_crop = xyz_info_l["xyz_crop"].copy()
+            xyz_l = np.zeros((im_H, im_W, 3), dtype=np.float32)
+            xyz_l[y1 : y2 + 1, x1 : x2 + 1, :] = xyz_crop
 
-        x1, y1, x2, y2 = xyz_info_l["xyxy"]
-        # float16 does not affect performance (classification/regresion)
-        xyz_crop = xyz_info_l["xyz_crop"]
-        xyz_l = np.zeros((im_H, im_W, 3), dtype=np.float32)
-        xyz_l[y1 : y2 + 1, x1 : x2 + 1, :] = xyz_crop
+            # xyz_info_r = np.load(inst_infos["xyz_path_r"]) # also load npz files
+            with  np.load(inst_infos["xyz_path_r"]) as xyz_info_r:
+                x1, y1, x2, y2 = xyz_info_r["xyxy"]
+                # float16 does not affect performance (classification/regresion)
+                xyz_crop = xyz_info_r["xyz_crop"].copy()
+            xyz_r = np.zeros((im_H, im_W, 3), dtype=np.float32)
+            xyz_r[y1 : y2 + 1, x1 : x2 + 1, :] = xyz_crop
 
-        x1, y1, x2, y2 = xyz_info_r["xyxy"]
-        # float16 does not affect performance (classification/regresion)
-        xyz_crop = xyz_info_r["xyz_crop"]
-        xyz_r = np.zeros((im_H, im_W, 3), dtype=np.float32)
-        xyz_r[y1 : y2 + 1, x1 : x2 + 1, :] = xyz_crop
+        except Exception as e:
+            print("error in loading xyz file:", inst_infos["xyz_path_l"], inst_infos["xyz_path_r"])
+            raise e
 
         # NOTE: full mask
         mask_obj_l = ((xyz_l[:, :, 0] != 0) | (xyz_l[:, :, 1] != 0) | (xyz_l[:, :, 2] != 0)).astype(bool).astype(np.float32)

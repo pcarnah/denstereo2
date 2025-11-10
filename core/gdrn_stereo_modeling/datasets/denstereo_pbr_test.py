@@ -27,6 +27,7 @@ from lib.pysixd import inout, misc
 from lib.utils.mask_utils import binary_mask_to_rle, cocosegm2mask
 from lib.utils.utils import dprint, iprint, lazy_property
 import scipy.ndimage as scin
+import imageio
 
 logger = logging.getLogger(__name__)
 
@@ -169,6 +170,12 @@ class DENSTEREO_PBR_Dataset:
 
                 depth_path_l = osp.join(scene_root_l, "depth/{:06d}.png".format(int_im_id))
                 depth_path_r = osp.join(scene_root_r, "depth/{:06d}.png".format(int_im_id))
+                try:
+                    imageio.imread(depth_path_l)
+                    imageio.imread(depth_path_r)
+                except OSError as e:
+                    print("error in reading depth file:", depth_path_l, depth_path_r)
+                    return []
 
                 ann_path_l = osp.join(annotations_path_l, "{:06d}.pkl".format(int_im_id))
                 ann_path_r = osp.join(annotations_path_r, "{:06d}.pkl".format(int_im_id))
@@ -193,6 +200,35 @@ class DENSTEREO_PBR_Dataset:
                     "depth_factor": depth_factor,
                     "img_type": "syn_pbr",  # NOTE: has background
                 }
+
+                def is_valid_instance(inst, DATASETS_ROOT):
+                    """Checks file paths and attempts to load files to validate integrity."""
+                    
+                    # Update paths in place (optional, but convenient)
+                    for key in ['xyz_path_l', 'xyz_path_r', 'occ_path_l', 'occ_path_r']:
+                        inst[key] = inst[key].replace("\\", "/").replace('D:/YCB-V-DS', DATASETS_ROOT)
+                        
+                    try:
+                        # Check xyz_path_l
+                        with np.load(inst['xyz_path_l'], allow_pickle=False) as data_l: 
+                            pass # File loads successfully
+                        
+                        # Check xyz_path_r
+                        with np.load(inst['xyz_path_r'], allow_pickle=False) as data_r:
+                            pass # File loads successfully
+                        
+                        # If both loads succeed, the instance is valid
+                        return True
+                        
+                    except ValueError as e:
+                        # Catches 'Cannot load file containing pickled data...'
+                        print(f"Skipping instance due to pickled data error: {inst['xyz_path_l']}")
+                        return False
+                        
+                    except Exception as e:
+                        # Catches UnpicklingError, FileNotFoundError, etc.
+                        print(f"Skipping instance due to general load error ({type(e).__name__}): {inst['xyz_path_l']}")
+                        return False
 
                 if osp.exists(ann_path_l):
                     insts = mmcv.load(ann_path_l)
@@ -312,6 +348,7 @@ class DENSTEREO_PBR_Dataset:
                             inst[key] = self.models[cur_label][key]
                         insts.append(inst)
 
+                insts = [inst for inst in insts if is_valid_instance(inst, DATASETS_ROOT)]
                 if len(insts) == 0:  # filter im without anno
                     return []
 
@@ -435,7 +472,7 @@ SPLITS_DENSTEREO_PBR = dict(
         with_depth=True,  # (load depth path here, but may not use it)
         height=480,
         width=640,
-        use_cache=True,
+        use_cache=False,
         num_to_load=-1,
         filter_invalid=True,
         scenes=denstereo.train_pbr_scenes,
